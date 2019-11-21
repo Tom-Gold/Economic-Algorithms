@@ -1,0 +1,44 @@
+'''
+Tom Goldenberg
+'''
+
+'''
+נתונה המחלקה הבאה:
+
+class Agent:
+    def item_value(item_index:int)→float: ...
+    
+המחלקה מייצגת שחקן המשתתף במשחק חלוקה הוגנת. יש בה פונקציה אחת המתארת את הערך
+שהשחקן מייחס לחפץ שהאינדקס שלו הוא index_item.
+כיתבו פונקציה הבודקת האם חלוקת-חפצים נתונה כלשהי היא EF1 .כותרת הפונקציה:
+
+def is_EF1(agents:List[Agent], bundles:List[int])->bool: ...
+
+הפרמטר agents הוא מערך בגודל n המייצג את השחקנים.
+הפרמטר bundles הוא מערך באותו גודל - n - המייצג את החלוקה: [i[bundle הוא אוסף
+אינדקסי החפצים שמקבל שחקן i.
+'''
+
+def is_EF1(agents, bundles):
+    # sum of bundle for each player
+    sum_list = []
+    index = 0
+    for agent in agents:
+        item_sum = 0
+        for item_index in bundles[index]:
+            item_sum = item_sum + agent.item_value(item_index)
+        sum_list.append(item_sum)
+        index = index + 1
+
+    #go over each pair sum to test for envy
+    for a_a in range(len(agents)):
+        for b_a in range(a_a,len(agents)):
+            diff = sum_list[b_a] - sum_list[a_a]
+            if (diff > 0):  # the sum of agent b is larger than agent a
+                found_1 = False # no item that is the size of the difference in sums
+                for item_index in bundles[b_a]: # iterate over items to look for an item that have equal or greater value than the difference
+                    if (diff <= agents[b_a].item_value(item_index)]): # found such item
+                        found_1 = True
+                if not found_1: # if none found return False
+                    return False
+    return  True # reached end of function thus found at least one item in all pairs
