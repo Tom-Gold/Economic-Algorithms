@@ -1,0 +1,20 @@
+class Distribution:
+    def __init__(self, values):
+        self.values = values
+
+    def F(self, x):
+        den = max(self.values) - min(self.values)
+        if den <= 0:
+            print("cant divide zero")
+            return
+        num = x - min(self.values)
+        if num <= 0:
+            return 0
+        if x >= max(self.values):
+            return 1
+
+        return num/den
+
+    def r(self, x):
+        ftag = 1/(max(self.values) - min(self.values))
+        return (x - (1 - self.F(x)) / ftag)
